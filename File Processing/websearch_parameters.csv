@@ -1,0 +1,6 @@
+name,value,units,description
+lipidmaps_tolerance,0.004,,m/z tolerance value used for search query on LIPID MAPS database
+lipidhome_tolerance,0.004,,m/z tolerance value used for search query on LipidHome database
+hmdb_tolerance,0.004,,m/z tolerance value used for search query on HMDB database
+delta_ppm_threshold,5,ppm,any delta_ppm value outside range -(delta_ppm_threshold) to +(delta_ppm_threshold) is deleted
+search_criteria,ALL,none,"COM: searches HMDB, LipidHome and computational data on LIPID MAPS. CUR: searches curated data on LIPID MAPS only. ALL: searches HMDB, LipidHome and both computation and curated data on LIPID MAPS."

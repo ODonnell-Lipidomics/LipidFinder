@@ -1,0 +1,12 @@
+index_do_not_alter,Polarity,Adduct Species,Mass Offset,Adduct Offset
+0,Neg,M-H,1,-1.007276
+1,Neg,M+Na-2H,1,20.974666
+2,Neg,M+Cl-,1,34.969402
+3,Neg,M+AcO-,1,59.013851
+4,Neg,2M-H,2,-1.007276
+5,Pos,M+H,1,1.007276
+6,Pos,M+Na,1,22.989218
+7,Pos,M+K,1,38.963158
+8,Pos,M+NH4,1,18.033823
+9,Pos,2M+NH4,2,18.033823
+10,Pos,2M+Na,2,22.989218
