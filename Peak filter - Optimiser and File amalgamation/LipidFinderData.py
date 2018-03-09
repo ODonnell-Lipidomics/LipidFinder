@@ -400,8 +400,8 @@ class LipidFinderData(object):
 
                 # Read file into DataFrame
                 if file_origin == 'X':
-                    rawFileDataFrame = xcmsReformat.reformat(fileName)
-
+                    rawFileDataFrame = xcmsReformat.reformat(fileName, self.firstRepOffset)
+                    self.firstRepOffset = 3
                 else:
                     rawFileDataFrame = pd.read_table(fileName, sep=',')
 
