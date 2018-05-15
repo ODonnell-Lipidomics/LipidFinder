@@ -407,7 +407,7 @@ def __singleRepStackRemoval__(replicate, lMZ, cMZ, mz, rt, maxStackGap, lipidSta
 
                     curStackMass = parentFrameMass + stackMassMult
                     stackIndList = list(np.where(((nzMZ >= lowerMZLimit(curStackMass)) & (
-                        nzMZ <= lowerMZLimit(curStackMass))) & (nzRT > lowerRTLimit(lastHitRT, rtTolMultipler)))[0])
+                        nzMZ <= upperMZLimit(curStackMass))) & (nzRT > lowerRTLimit(lastHitRT, rtTolMultipler)))[0])
                     if not stackIndList:
                         maxGapCount += 1
                     else:
