@@ -1,0 +1,6 @@
+Category,Name,Compound,Ion,MZ
+<100da,water,water,,18.0106
+<100da,Chloride ion,as in adduct list,M+Cl-,34.96885
+<100da,Acetate ion,as in adduct list,M+AcO-,59.044
+>100da,formic acid dimer + Na - 2H (2*formic acid+Na-2H),"TFA-, formic acid+Na-2H",2HCOO- + Na+,112.9851
+>100da,N-butyl benzenesulfonamide,N-butyl benzenesulfonamide,M - H,212.0745

@@ -1,0 +1,6 @@
+include LICENSE
+include README.md
+include requirements.txt
+include MANIFEST.in
+recursive-include demo *
+include docs/*

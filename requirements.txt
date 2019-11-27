@@ -1,0 +1,14 @@
+# This is an implicit value, here for clarity
+--index-url https://pypi.python.org/simple/
+
+cycler >= 0.10.0
+ipython >= 5.6.0 ; python_version < '3.0'
+ipython >= 6.1.0 ; python_version >= '3.0'
+ipywidgets >= 7.0.0
+matplotlib >= 2.1.0
+numpy >= 1.13.3
+pandas >= 0.20.3
+requests-toolbelt >= 0.8.0
+scipy >= 0.19.1
+setuptools >= 36.5.0
+xlsxwriter >= 1.1.8

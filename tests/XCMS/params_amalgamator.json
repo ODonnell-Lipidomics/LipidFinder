@@ -1,0 +1,10 @@
+{
+	"numSamples": 12,
+	"mzCol": "mzmed",
+	"rtCol": "rtmed",
+	"firstSampleIndex": 5,
+	"mzFixedError": 0.0005,
+	"mzPPMError": 4.0,
+	"maxRTDiffAdjFrame": 0.3,
+	"combineIntensities": true
+}

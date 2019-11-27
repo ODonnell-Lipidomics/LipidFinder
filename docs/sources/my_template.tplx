@@ -1,0 +1,19 @@
+((*- extends 'article.tplx' -*))
+
+((* block markdowncell scoped *))
+((( cell.source | replace('<br><br>','\n\n') | citation2latex | strip_files_prefix | markdown2latex )))
+((* endblock markdowncell *))
+
+((* block author *))
+\author{Jorge Alvarez-Jarreta\\
+  \texttt{lipidfinder@cardiff.ac.uk}}
+((* endblock author *))
+
+((* block date *))
+\date{}
+((* endblock date *))
+
+((* block bibliography *))
+\bibliographystyle{abbrv}
+\bibliography{my_bibliography}
+((* endblock bibliography *))

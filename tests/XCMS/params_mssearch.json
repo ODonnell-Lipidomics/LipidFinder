@@ -1,0 +1,12 @@
+{
+	"mzCol": "mzmed",
+	"rtCol": "rtmed",
+	"database": "ALL_LMSD",
+	"mzTolerance": 0.005,
+	"mzToleranceUnit": "Daltons",
+	"addAllColumns": true,
+	"summary": true,
+	"plotCategories": true,
+	"figFormat": "pdf",
+	"figColors": "standard"
+}

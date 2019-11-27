@@ -1,0 +1,508 @@
+{
+    "polarity": {
+        "modules": ["peakfilter"],
+        "description": "File(s) ion polarity mode:",
+        "type": "selection",
+        "options": ["Negative", "Positive"]
+    },
+    "preprocSoftware": {
+        "modules": ["peakfilter"],
+        "description": "Preprocessing software used to generate the input file(s):",
+        "type": "selection",
+        "options": ["XCMS", "Other"]
+    },
+    "numSamples": {
+        "modules": ["peakfilter", "amalgamator"],
+        "description": "Number of samples in the experiment:",
+        "type": "int",
+        "min": [1]
+    },
+    "numTechReps": {
+        "modules": ["peakfilter"],
+        "description": "Number of technical replicates per sample:",
+        "type": "int",
+        "min": [1]
+    },
+    "firstSampleIndex": {
+        "modules": ["peakfilter", "amalgamator"],
+        "description": "Index of the column with the first sample, first technical replicate:",
+        "help": "The first column of a CSV/Excel file has index 1.",
+        "type": "int",
+        "min": [2]
+    },
+    "mzCol": {
+        "modules": ["peakfilter", "amalgamator", "mssearch"],
+        "description": "Name (header) of the column that contains the m/z values:",
+        "help": "It must be the same name for every input file.",
+        "type": "str",
+        "example": "mz"
+    },
+    "rtCol": {
+        "modules": ["peakfilter", "amalgamator", "mssearch"],
+        "description": "Name (header) of the column that contains the retention time values:",
+        "help": "It must be the same name for every input file.",
+        "type": "str",
+        "example": "rt"
+    },
+    "timeUnit": {
+        "modules": ["peakfilter"],
+        "description": "Time unit of the retention time in the input file(s):",
+        "type": "selection",
+        "options": ["Minutes", "Seconds"],
+        "default": "Minutes"
+    },
+    "intensityStDev": {
+        "modules": ["peakfilter"],
+        "description": "Maximum deviation the donor intensity may be from the average intensity of the target frame:",
+        "help": "Must be greater than or equal to 0.",
+        "type": "float",
+        "triggers": [["numTechReps", ">", 1.0]],
+        "min": [0.0],
+        "default": 3.0
+    },
+    "mzFixedError": {
+        "modules": ["peakfilter", "amalgamator"],
+        "description": "Allowed fixed error when observing a mass:",
+        "help": "In Daltons.\nMust be greater than or equal to 0.",
+        "type": "float",
+        "min": [0.0],
+        "default": 0.0005
+    },
+    "mzPPMError": {
+        "modules": ["peakfilter", "amalgamator"],
+        "description": "Mass-dependant PPM error to add to the fixed error:",
+        "help": "PPM: parts per million.\nMust be greater than or equal to 0.",
+        "type": "float",
+        "min": [0.0],
+        "default": 4.0
+    },
+    "maxRTDiffAdjFrame": {
+        "modules": ["peakfilter", "amalgamator"],
+        "description": "Maximum time difference between a feature edge and an adjacent frame to be considered part of the same feature:",
+        "help": "In minutes.\nMust be greater than or equal to 0.",
+        "type": "float",
+        "min": [0.0],
+        "default": 0.3
+    },
+    "peakMaxRTWidth": {
+        "modules": ["peakfilter"],
+        "description": "Maximum retention time a single lipid peak can span:",
+        "help": "In minutes.\nMust be greater than or equal to 0.\nCannot be lower than three times the previous parameter.",
+        "type": "float",
+        "triggers": [["preprocSoftware", "==", "Other"]],
+        "min": [["maxRTDiffAdjFrame", "*", 3.0]],
+        "default": 3.4
+    },
+    "peakMinFoldDiff": {
+        "modules": ["peakfilter"],
+        "description": "Minimum fold difference the current frame intensity must be to consider it as part of a peak:",
+        "help": "Must be greater than 1, and greater than the\nadjacent intensity of the candidate frame.",
+        "type": "float",
+        "triggers": [["preprocSoftware", "==", "Other"]],
+        "min": [1.0001],
+        "default": 1.05
+    },
+    "concatAllFrames": {
+        "modules": ["peakfilter"],
+        "description": "Concatenate all peak frame intensities into the peak centre?",
+        "help": "By default, only the most intense peak\nframe is used for the peak centre.",
+        "type": "bool",
+        "triggers": [["preprocSoftware", "==", "Other"]],
+        "default": true
+    },
+    "numQCReps": {
+        "modules": ["peakfilter"],
+        "description": "Number of quality control replicates in the input file(s):",
+        "type": "int",
+        "min": [0],
+        "default": 0
+    },
+    "QCRSD": {
+        "modules": ["peakfilter"],
+        "description": "Relative standard deviation (RSD) cut off range:",
+        "help": "Each value must be greater than 0 and less than 100.",
+        "type": "int range",
+        "triggers": [["numQCReps", ">", 0]],
+        "min": [1],
+        "max": [99],
+        "default": [30, 50]
+    },
+    "numSolventReps": {
+        "modules": ["peakfilter"],
+        "description": "Number of solvent replicates in the input file(s):",
+        "type": "int",
+        "min": [0],
+        "default": 0
+    },
+    "removeSolvents": {
+        "modules": ["peakfilter"],
+        "description": "Remove solvents intensity from sample replicates?",
+        "type": "bool",
+        "triggers": [["numSolventReps", ">", 0]],
+        "default": true
+    },
+    "solventMinFoldDiff": {
+        "modules": ["peakfilter"],
+        "description": "Minimum fold difference between each sample replicate intensity and the solvent mean to keep the feature:",
+        "help": "Must be greater or equal to 0.",
+        "type": "float",
+        "triggers": [["numSolventReps", ">", 0], "removeSolvents"],
+        "min": [0.0],
+        "default": 3.0
+    },
+    "intenSignifCutOff": {
+        "modules": ["peakfilter"],
+        "description": "Level at which the intensity of a sample reading is significant enough to process:",
+        "help": "Must be greater than or equal to 0.",
+        "type": "int",
+        "min": [0],
+        "default": 2000
+    },
+    "removeIonFrags": {
+        "modules": ["peakfilter"],
+        "description": "Remove in-source fragmentation?",
+        "type": "bool",
+        "default": true
+    },
+    "negIonFragsCSVPath": {
+        "modules": ["peakfilter"],
+        "description": "Path to CSV file with the list of negative in-source fragments:",
+        "help": "The new CSV file must contain all the\ncolumns in the default file (case-sensitive).",
+        "type": "path",
+        "triggers": [["polarity", "==", "Negative"], "removeIonFrags"],
+        "default": "Data/ionfragments_negative.csv"
+    },
+    "posIonFragsCSVPath": {
+        "modules": ["peakfilter"],
+        "description": "Path to CSV file with the list of positive in-source fragments:",
+        "help": "The new CSV file must contain all the\ncolumns in the default file (case-sensitive).",
+        "type": "path",
+        "triggers": [["polarity", "==", "Positive"], "removeIonFrags"],
+        "default": "Data/ionfragments_positive.csv"
+    },
+    "removeContaminants": {
+        "modules": ["peakfilter"],
+        "description": "Remove contaminants?",
+        "type": "bool",
+        "default": true
+    },
+    "negContaminantsCSVPath": {
+        "modules": ["peakfilter"],
+        "description": "Path to CSV file with the list of negative contaminants:",
+        "help": "The new CSV file must contain 'Polarity',\n'Category', 'Ion' and 'MZ' columns (case-sensitive).",
+        "type": "path",
+        "triggers": [["polarity", "==", "Negative"], "removeContaminants"],
+        "default": "Data/contaminants_negative.csv"
+    },
+    "posContaminantsCSVPath": {
+        "modules": ["peakfilter"],
+        "description": "Path to CSV file with the list of positive contaminants:",
+        "help": "The new CSV file must contain 'Polarity',\n'Category', 'Ion' and 'MZ' columns (case-sensitive).",
+        "type": "path",
+        "triggers": [["polarity", "==", "Positive"], "removeContaminants"],
+        "default": "Data/contaminants_positive.csv"
+    },
+    "removeAdducts": {
+        "modules": ["peakfilter"],
+        "description": "Remove adducts?",
+        "type": "bool",
+        "default": true
+    },
+    "negAdductsCSVPath": {
+        "modules": ["peakfilter"],
+        "description": "Path to CSV file with the list of negative adducts:",
+        "help": "The new CSV file must contain all the columns\nin the default file and in the same order (case-sensitive).",
+        "type": "path",
+        "triggers": [["polarity", "==", "Negative"], "removeAdducts"],
+        "default": "Data/adducts_negative.csv"
+    },
+    "negAdductsPairs": {
+        "modules": ["peakfilter"],
+        "description": "Pairs of negative adducts relating to the first column in the CSV file:",
+        "help": "The element order of each pair is ignored,\ne.g. (M-H,M+Cl) will have the same outcome as (M+Cl,M-H).",
+        "type": "pairs",
+        "triggers": [["polarity", "==", "Negative"], "removeAdducts"],
+        "file": "negAdductsCSVPath",
+        "default": [["M-H","M+Na-2H"],["M-H","M+Cl"],["M-H","M+OAc"],["M-H","2M-H"],["M+Cl","M+OAc"]]
+    },
+    "posAdductsCSVPath": {
+        "modules": ["peakfilter"],
+        "description": "Path to CSV file with the list of positive adducts:",
+        "help": "The new CSV file must contain all the columns\nin the default file and in the same order (case-sensitive).",
+        "type": "path",
+        "triggers": [["polarity", "==", "Positive"], "removeAdducts"],
+        "default": "Data/adducts_positive.csv"
+    },
+    "posAdductsPairs": {
+        "modules": ["peakfilter"],
+        "description": "Pairs of positive adducts relating to the first column in the CSV file:",
+        "help": "The element order of each pair is ignored,\ne.g. (M+H,M+K) will have the same outcome as (M+K,M+H).",
+        "type": "pairs",
+        "triggers": [["polarity", "==", "Positive"], "removeAdducts"],
+        "file": "posAdductsCSVPath",
+        "default": [["M+H","M+Na"],["M+H","M+K"],["M+H","M+NH4"],["M+H","2M+NH4"],["M+H","2M+Na"],["M+Na","M+K"],["M+Na","2M+Na"],["M+NH4","2M+NH4"]]
+    },
+    "adductAddition": {
+        "modules": ["peakfilter"],
+        "description": "Add the intensity of each adduct found to the intensity of the primary mass?",
+        "type": "bool",
+        "triggers": ["removeAdducts"],
+        "default": false
+    },
+    "removeStacks": {
+        "modules": ["peakfilter"],
+        "description": "Remove stacks?",
+        "type": "bool",
+        "default": true
+    },
+    "stacksCSVPath": {
+        "modules": ["peakfilter"],
+        "description": "Path to CSV file with the list of stacks:",
+        "help": "The new CSV file must contain 'Category'\nand 'MZ' columns (case-sensitive).",
+        "type": "path",
+        "triggers": ["removeStacks"],
+        "default": "Data/stacks.csv"
+    },
+    "maxStackGap": {
+        "modules": ["peakfilter"],
+        "description": "Maximum number of missing values allowed before a stack search will stop for each lipid (or contaminant):",
+        "help": "Must be greater than or equal to 0.",
+        "type": "int",
+        "triggers": ["removeStacks"],
+        "min": [0],
+        "default": 3
+    },
+    "lipidStackAddition": {
+        "modules": ["peakfilter"],
+        "description": "Add the intensity of each lipid stack ion found to the intensity of the primary mass?",
+        "type": "bool",
+        "triggers": ["removeStacks"],
+        "default": false
+    },
+    "intenOutlierCutOff": {
+        "modules": ["peakfilter"],
+        "description": "Cut off point of each sample replicate mean between using lower and higher RSD cut offs:",
+        "help": "RSD: relative standard deviation.\nMust be greater than 0.",
+        "type": "int",
+        "min": [1],
+        "default": 5000
+    },
+    "intensityRSD": {
+        "modules": ["peakfilter"],
+        "description": "RSD to use when the mean average intensities are below or above the replicate mean intensity cut off:",
+        "help": "RSD: relative standard deviation.\nEach value must be greater than or equal to 0.",
+        "type": "int range",
+        "min": [0],
+        "default": [35, 40]
+    },
+    "correctRTMeans": {
+        "modules": ["peakfilter"],
+        "description": "Apply retention time correction to the means of the sample replicates?",
+        "help": "Advisable when there are no technical replicates.",
+        "type": "bool",
+        "default": true
+    },
+    "featMassAssignment": {
+        "modules": ["peakfilter"],
+        "description": "Assign the masses of every frame to the highest intensity mass in the feature set?",
+        "help": "By default, the highest intensity mass in the\nfeature set is limited to the the mass cluster.",
+        "type": "bool",
+        "default": false
+    },
+    "outlierMinDiff": {
+        "modules": ["peakfilter"],
+        "description": "Minimum difference a point needs have from the mean of the others in the chromatogram to be considered an outlier:",
+        "help": "Must be greater than or equal to 0.",
+        "type": "int",
+        "min": [0],
+        "default": 1
+    },
+    "minNonZeroPoints": {
+        "modules": ["peakfilter"],
+        "description": "Minimum number of non-zero points required to apply the broad contaminant removal:",
+        "help": "Must be greater than 0.",
+        "type": "int",
+        "min": [1],
+        "default": 4
+    },
+    "intenRSDCutOff": {
+        "modules": ["peakfilter"],
+        "description": "Target intensity RSD to consider the non-outliers similar enough to be removed:",
+        "help": "RSD: relative standard deviation.\nMust be greater than or equal to 0.",
+        "type": "int",
+        "min": [0],
+        "default": 30
+    },
+    "rtSDCutOff": {
+        "modules": ["peakfilter"],
+        "description": "Target retention time SD to consider the non-outliers similar enough to be removed:",
+        "help": "SD: standard deviation.\nMust be greater than or equal to 0.",
+        "type": "int",
+        "min": [0],
+        "default": 2
+    },
+    "removeIsotopes": {
+        "modules": ["peakfilter"],
+        "description": "Remove isotopes?",
+        "type": "bool",
+        "default": true
+    },
+    "numIsotopes": {
+        "modules": ["peakfilter"],
+        "description": "Total number of isotopes to search for (maximum number of C13 allowed):",
+        "help": "The first isotope must exist in order to search for subsequent isotopes.\nMust be greater than 0 and less than 9.",
+        "type": "int",
+        "min": [1],
+        "max": [8],
+        "default": 4
+    },
+    "isoIntensityCoef": {
+        "modules": ["peakfilter"],
+        "description": "Coefficient range to apply to the first isotope's predicted intensity:",
+        "help": "A value of 1 corresponds approximately to the\nfirst isotope's predicted peak height.",
+        "type": "float range",
+        "min": [0.0001],
+        "default": [0.7, 1.3]
+    },
+    "filterMassDefect": {
+        "modules": ["peakfilter"],
+        "description": "Filter salt cluster artefacts?",
+        "type": "bool",
+        "default": true
+    },
+    "rtCutOff": {
+        "modules": ["peakfilter"],
+        "description": "Maximum retention time a frame must have to be considered as a possible salt cluster artefact:",
+        "help": "In minutes.\nMust be greater than or equal to 0.",
+        "type": "float",
+        "triggers": ["filterMassDefect"],
+        "min": [0.0],
+        "default": 0.8
+    },
+    "negMassDefectCSVPath": {
+        "modules": ["peakfilter"],
+        "description": "Path to CSV file with the inclusion list of negative analytes:",
+        "help": "The new CSV file must contain all the columns\nin the default file and in the same order (case-sensitive).",
+        "type": "path",
+        "triggers": [["polarity", "==", "Negative"], "filterMassDefect"],
+        "default": "Data/md_inclusion_negative.csv"
+    },
+    "posMassDefectCSVPath": {
+        "modules": ["peakfilter"],
+        "description": "Path to CSV file with the inclusion list of positive analytes:",
+        "help": "The new CSV file must contain all the columns\nin the default file and in the same order (case-sensitive).",
+        "type": "path",
+        "triggers": [["polarity", "==", "Positive"], "filterMassDefect"],
+        "default": "Data/md_inclusion_positive.csv"
+    },
+    "mzDelta": {
+        "modules": ["peakfilter"],
+        "description": "Mass tolerance used to detect and keep m/z values from the inclusion list:",
+        "help": "In Daltons.",
+        "type": "float",
+        "triggers": ["filterMassDefect"],
+        "min": [0.0],
+        "default": 0.01
+    },
+    "calculateFDR": {
+        "modules": ["peakfilter"],
+        "description": "Calculate the False Discovery Rate (FDR)?",
+        "help": "The decoy database has been generated by adding\n0.5 Da to every m/z in COMP_DB of LIPID MAPS.",
+        "type": "bool",
+        "default": true
+    },
+    "rtRange": {
+        "modules": ["peakfilter"],
+        "description": "Minimum and maximum retention time thresholds to keep a frame in the summary:",
+        "help": "In minutes.\nEach value must be greater than or equal to 0.",
+        "type": "float range",
+        "min": [0.0],
+        "default": [1.0, 57.5]
+    },
+    "combineIntensities": {
+        "modules": ["amalgamator"],
+        "description": "Combine intensities for ions of the same molecule found in both polarities?",
+        "type": "bool",
+        "default": true
+    },
+    "database": {
+        "modules": ["mssearch"],
+        "description": "Select the database for the bulk structure search:",
+        "help": "COMP_DB: computationally generated database composed of bulk (isobaric) species.\nALL_LMSD: complete LIPID MAPS structure database (LMSD).\nCURATED_LMSD: subset of curated structures in LMSD.",
+        "type": "selection",
+        "options": ["COMP_DB", "ALL_LMSD", "CURATED_LMSD"],
+        "default": "COMP_DB"
+    },
+    "mzTolerance": {
+        "modules": ["mssearch"],
+        "description": "Mass tolerance:",
+        "help": "Must be greater than or equal to 0.",
+        "type": "float",
+        "min": [0.0],
+        "default": 4.0
+    },
+    "mzToleranceUnit": {
+        "modules": ["mssearch"],
+        "description": "Mass tolerance unit:",
+        "help": "PPM: parts per million.",
+        "type": "selection",
+        "options": ["PPM", "Daltons"],
+        "default": "PPM"
+    },
+    "evenChains": {
+        "modules": ["mssearch"],
+        "description": "Show even chains only?",
+        "triggers": [["database", "==", "COMP_DB"]],
+        "type": "bool",
+        "default": false
+    },
+    "targetAdducts": {
+        "modules": ["mssearch"],
+        "description": "Target ion adducts:",
+        "help": "'Neutral' option is for testing/quality control purposes only.",
+        "type": "multiselection",
+        "options": ["[M+H]+", "[M+H-H2O]+", "[M+2H]+", "[M+3H]+", "[M+4H]+", "[M+NH4]+", "[M+Ag]+", "[M+Na]+", "[M+2Na]+", "[M+K]+", "[M+2K]+", "[M+Li]+", "[M+2Li]+",
+                    "[M-H]-", "[M-CH3]-", "[M-2H]-", "[M-3H]-", "[M-4H]-", "[M.F]-", "[M.HF2]-", "[M.Cl]-", "[M.OAc]-", "[M.HCOO]-", "[Neutral]"],
+        "default": ["[M-H]-", "[M+H]+", "[M+Na]+", "[M+NH4]+", "[M.OAc]-"]
+    },
+    "categories": {
+        "modules": ["mssearch"],
+        "description": "Search only for the following lipid categories:",
+        "help": "Leave empty to include all.",
+        "help_cli": "",
+        "type": "multiselection",
+        "options": ["Fatty Acyls [FA]", "Glycerolipids [GL]", "Glycerophospholipids [GP]", "Sphingolipids [SP]", "Sterol Lipids [ST]", "Prenol Lipids [PR]",
+                    "Saccharolipids [SL]", "Polyketides [PK]"],
+        "default": []
+    },
+    "summary": {
+        "modules": ["mssearch"],
+        "description": "Create a summary file of the putative profiling with only the main lipid category match per m/z and RT?",
+        "help": "RT: retention time.",
+        "type": "bool",
+        "default": true
+    },
+    "plotCategories": {
+        "modules": ["mssearch"],
+        "description": "Generate a category scatter plot of the most common lipid category per m/z and RT?",
+        "help": "RT: retention time.",
+        "type": "bool",
+        "default": true
+    },
+    "figFormat": {
+        "modules": ["mssearch"],
+        "description": "File format in which the category scatter plot will be saved:",
+        "type": "selection",
+        "triggers": ["plotCategories"],
+        "options": ["pdf", "jpg", "jpeg", "tif", "tiff", "png", "ps", "eps", "svg", "svgz", "pgf", "raw", "rgba"],
+        "default": "pdf"
+    },
+    "figColors": {
+        "modules": ["mssearch"],
+        "description": "Set the color scheme for the category scatter plot:",
+        "type": "selection",
+        "triggers": ["plotCategories"],
+        "options": ["standard", "colorblind"],
+        "default": "standard"
+    }
+}
