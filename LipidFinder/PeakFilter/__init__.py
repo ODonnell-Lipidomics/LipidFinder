@@ -226,8 +226,8 @@ def peak_filter(data, parameters, dst='', verbose=False):
                        "{0:.2%}").format(fdrValue)
         except ValueError as e:
             message = 'ValueError: ' + e.args[0]
-        except Exception:
-            pass
+        except Exception as oe:
+            message = 'OtherError: ' + oe.args[0]
         logger.info(message)
     stepNum = _update_status(data, stepDst, verbose, stepNum)
     # Create summary CSV file from the processed dataframe

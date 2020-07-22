@@ -26,8 +26,8 @@ from requests_toolbelt.multipart.encoder import MultipartEncoder
 from LipidFinder._py3k import StringIO, range
 
 
-#LIPIDMAPS_URL = 'http://www.lipidmaps.org/tools/ms/py_bulk_search.php'
-LIPIDMAPS_URL = 'http://lipidmaps-dev.babraham.ac.uk/tools/ms/py_bulk_search.php'
+LIPIDMAPS_URL = 'https://www.lipidmaps.org/tools/ms/py_bulk_search.php'
+#LIPIDMAPS_URL = 'https://dev.lipidmaps.org/tools/ms/py_bulk_search.php'
 # Maximum number of m/z values to send at once to LIPID MAPS
 BATCH_SIZE = 500
 
