@@ -57,4 +57,4 @@ def calculate_sample_means(data, parameters):
                     axis=1)
             # Round to nearest integer, cast to integer and insert
             # sample means into the dataframe
-            data[colName] = rawMeans.round(0).astype(int)
+            data[colName] = rawMeans.round(0).astype("int64")
