@@ -228,7 +228,7 @@ class LFParameters:
         """
         header = ' ({0})'.format(key) if verbose else ''
         typeStr = self._parameters[key]['type']
-        if (not isinstance(value, eval(typeStr))):
+        if (not isinstance(value, self._eval_type(typeStr))):
             # Condition for string types run in Python 2.7 and Windows
             if ((typeStr == 'str') and (not isinstance(value, basestring))):
                 warnings.warn("{0}: '{1}' type expected, '{2}' found".format(
@@ -252,7 +252,7 @@ class LFParameters:
         """
         header = ' ({0})'.format(key) if verbose else ''
         typeStr = self._parameters[key]['type']
-        if (not isinstance(value, eval(typeStr))):
+        if (not isinstance(value, self._eval_type(typeStr))):
             warnings.warn("{0}: '{1}' type expected, '{2}' found".format(
                     header, typeStr, value.__class__.__name__))
             return False
@@ -332,7 +332,7 @@ class LFParameters:
         # Get the elements' expected type from the first part of the
         # parameter's "type" field
         typeStr = self._parameters[key]['type'].split(' ')[0]
-        if (any(not isinstance(x, eval(typeStr)) for x in value)):
+        if (any(not isinstance(x, self._eval_type(typeStr)) for x in value)):
             warnings.warn(("{0}: ['{1}','{1}'] types expected, ['{2}','{3}']"
                            " found".format(header, typeStr,
                                            value[0].__class__.__name__,
@@ -476,3 +476,18 @@ class LFParameters:
                 return self._parameters[expr]['value']
             else:
                 return expr
+
+    def _eval_type(self, typeStr):
+        # type: (str) -> object
+        """Returns the type corresponding to evaluate typeStr.
+
+        If typeStr is "float", returns the tuple (int, float). Returns
+        the corresponding type otherwise.
+
+        Keyword Arguments:
+            typeStr -- string with the type to return
+        """
+        if typeStr == 'float':
+            return (int, float)
+        else:
+            return eval(typeStr)
