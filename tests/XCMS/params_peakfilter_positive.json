@@ -23,7 +23,6 @@
 	"removeStacks": true,
 	"maxStackGap": 3,
 	"lipidStackAddition": false,
-	"rtToleranceCoef": 1.0,
 	"intenOutlierCutOff": 5000,
 	"intensityRSD": [35,40],
 	"correctRTMeans": true,
