@@ -91,7 +91,7 @@ def __process_sample_mean__(sample, rtArray, parameters):
     if (numpy.count_nonzero(sample.values) > parameters['minNonZeroPoints']):
         intensities = numpy.copy(sample.values)
         # Get the index of every non-zero intensity
-        nonZeroIndex = intensities.to_numpy().nonzero()[0]
+        nonZeroIndex = intensities.nonzero()[0]
         # Create two arrays, one with non-zero intensities and the other
         # with their corresponding RT
         nonZeroIntensities = numpy.copy(intensities[nonZeroIndex])
