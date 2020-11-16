@@ -12,8 +12,8 @@ LipidFinder is distributed under the **MIT license** (see *LICENSE* file for mor
 ## Configuring your computer
 
 LipidFinder has been tested for Python 2.7.9 and Python 3.6.3. This doesn't mean it won't work in earlier versions, but you might get errors or significant differences in the results. Some computer’s operating systems come bundled with Python, but it can also be downloaded and installed from the [Python Software Foundation](https://www.python.org/downloads/). The first step is to download LipidFinder's package file (Wheel format) for GitHub:
-* *Python 2.7:* [LipidFinder-2.0.1-py2-none-any.whl](https://github.com/ODonnell-Lipidomics/LipidFinder/releases/download/2.0.1/LipidFinder-2.0.1-py2-none-any.whl)
-* *Python 3.6:* [LipidFinder-2.0.1-py3-none-any.whl](https://github.com/ODonnell-Lipidomics/LipidFinder/releases/download/2.0.1/LipidFinder-2.0.1-py3-none-any.whl)
+* *Python 2.7:* [LipidFinder-2.0.1-py2-none-any.whl](https://github.com/ODonnell-Lipidomics/LipidFinder/releases/download/v2.0.1/LipidFinder-2.0.1-py2-none-any.whl)
+* *Python 3.6:* [LipidFinder-2.0.1-py3-none-any.whl](https://github.com/ODonnell-Lipidomics/LipidFinder/releases/download/v2.0.1/LipidFinder-2.0.1-py3-none-any.whl)
 
 ### Default installation
 
