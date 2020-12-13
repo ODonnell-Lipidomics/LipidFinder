@@ -74,7 +74,7 @@ def __process_feature__(mzCluster, # pandas.DataFrame
         rtArray    -- array of retention times from source data
         parameters -- LipidFinder's PeakFilter parameters instance
     """
-    mzCluster = mzCluster.apply(__process_sample_mean__, rtArray=rtArray,
+    mzCluster = mzCluster.apply(__process_sample_mean__, rtArray=rtArray[mzCluster.index],
                                 parameters=parameters)
     return mzCluster
 
