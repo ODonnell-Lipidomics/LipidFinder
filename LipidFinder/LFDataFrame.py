@@ -169,7 +169,7 @@ class LFDataFrame(pandas.core.frame.DataFrame):
                 firstIndex = meanColIndexes[1]
             else:
                 firstIndex = meanColIndexes[0]
-            lastIndex = meanColIndexes[-1]
+            lastIndex = meanColIndexes[-1] + 1
         else:
             firstIndex = parameters['firstSampleIndex'] - 1
             lastIndex = firstIndex \
