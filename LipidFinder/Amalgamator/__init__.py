@@ -165,7 +165,7 @@ def amalgamate_data(negData, posData, parameters, dst=''):
                 if (parameters['combineIntensities']):
                     results.iloc[-1, firstIndex : lastIndex] = \
                             results.iloc[-1, firstIndex : lastIndex] \
-                            + posData.iloc[i, firstIndex : lastIndex]
+                            + posData.iloc[indMatch, firstIndex : lastIndex]
                     results.iloc[-1, polColIndex] += ' (Combined)'
                 else:
                     results.iloc[-1, polColIndex] += ' (Both)'
