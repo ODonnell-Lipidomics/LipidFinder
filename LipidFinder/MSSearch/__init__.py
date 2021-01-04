@@ -55,8 +55,7 @@ from LipidFinder._utils import print_progress_bar
 warnings.simplefilter(action='ignore', category=FutureWarning)
 # Deactivate pandas warnings
 pandas.options.mode.chained_assignment = None
-#LIPIDMAPS_URL = 'https://www.lipidmaps.org/tools/ms/py_bulk_search.php'
-LIPIDMAPS_URL = 'http://lipidmaps-dev.babraham.ac.uk/tools/ms/py_bulk_search.php'
+LIPIDMAPS_URL = 'https://www.lipidmaps.org/tools/ms/py_bulk_search.php'
 # Maximum number of m/z values to send at once to LIPID MAPS
 BATCH_SIZE = 500
 
