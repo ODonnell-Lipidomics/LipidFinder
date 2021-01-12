@@ -57,7 +57,7 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 pandas.options.mode.chained_assignment = None
 LIPIDMAPS_URL = 'https://www.lipidmaps.org/tools/ms/py_bulk_search.php'
 # Maximum number of m/z values to send at once to LIPID MAPS
-BATCH_SIZE = 500
+BATCH_SIZE = 150
 
 
 def bulk_structure_search(data, parameters, dst=''):
