@@ -7,7 +7,7 @@
 
 name = "LipidFinder"
 
-__version__ = "2.0.1"
+__version__ = "2.0.2"
 
 __author__ = ("Jorge Alvarez-Jarreta, Christopher J. Brasher, Eoin Fahy, Anne O'Connor and Anna Price")
 __copyright__ = "Copyright 2019, LipidFinder"
